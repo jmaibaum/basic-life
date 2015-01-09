@@ -1,0 +1,30 @@
+100 REM INIT
+120     DIM spielfeld(22,22)
+140     DIM arbeitsfeld(22,22)
+160     CLEAR
+200 REM SEED
+220     RANDOMIZE
+240     FOR i=1 TO 150
+260         LET spalte=INT(RND*20+2)
+280         LET zeile=INT(RND*20+2)
+300         IF spielfeld(zeile,spalte)=1 THEN GOTO 260
+320         LET spielfeld(zeile,spalte)=1
+340     NEXT i
+400 REM Ausgabe
+420     FOR zeile=2 TO 21
+440         FOR spalte=2 TO 21
+460             PRINT spielfeld(zeile,spalte);
+480         NEXT spalte
+500         PRINT
+520     NEXT zeile
+600 REM Analyse
+620     FOR spalte=2 TO 21
+640         FOR zeile=2 TO 21
+660             LET umfeld=spielfeld(zeile-1,spalte)
+680             LET umfeld=umfeld+spielfeld(zeile-1,spalte+1)+spielfeld(zeile,spalte+1)
+700             LET umfeld=umfeld+spielfeld(zeile+1,spalte+1)+spielfeld(zeile+1,spalte)
+720             LET umfeld=umfeld+spielfeld(zeile+1,spalte-1)+spielfeld(zeile,spalte-1)
+740             LET umfeld=umfeld+spielfeld(zeile-1,spalte-1)
+760             GOSUB 1000 ! Regelanwendung
+780         NEXT zeile
+800     NEXT spalte
