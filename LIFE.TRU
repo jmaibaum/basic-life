@@ -26,7 +26,7 @@
 720             LET umfeld=umfeld+spielfeld(zeile+1,spalte-1)+spielfeld(zeile,spalte-1)
 740             LET umfeld=umfeld+spielfeld(zeile-1,spalte-1)
 760             IF (umfeld=3 AND spielfeld(zeile,spalte)=0) THEN LET arbeitsfeld(zeile,spalte)=1
-780             IF ((umfeld<2 AND spielfeld(zeile,spalte)=1) XOR (umfeld>3 AND spielfeld(zeile,spalte)=1)) THEN LET arbeitsfeld(zeile,spalte)=0
+780             IF ((umfeld<2 AND spielfeld(zeile,spalte)=1) OR (umfeld>3 AND spielfeld(zeile,spalte)=1)) THEN LET arbeitsfeld(zeile,spalte)=0
 800             IF ((umfeld=2 OR umfeld=3) AND spielfeld(zeile,spalte)=1) THEN LET arbeitsfeld(zeile,spalte)=1
 820         NEXT zeile
 840     NEXT spalte
