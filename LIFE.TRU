@@ -17,7 +17,7 @@
 480         NEXT spalte
 500         PRINT
 520     NEXT zeile
-600 REM Analyse
+600 REM Analyse und Regelanwendung
 620     FOR spalte=2 TO 21
 640         FOR zeile=2 TO 21
 660             LET umfeld=spielfeld(zeile-1,spalte)
@@ -25,6 +25,9 @@
 700             LET umfeld=umfeld+spielfeld(zeile+1,spalte+1)+spielfeld(zeile+1,spalte)
 720             LET umfeld=umfeld+spielfeld(zeile+1,spalte-1)+spielfeld(zeile,spalte-1)
 740             LET umfeld=umfeld+spielfeld(zeile-1,spalte-1)
-760             GOSUB 1000 ! Regelanwendung
-780         NEXT zeile
-800     NEXT spalte
+760             IF (umfeld=3 AND spielfeld(zeile,spalte)=0) THEN LET arbeitsfeld(zeile,spalte)=1
+780             IF ((umfeld<2 AND spielfeld(zeile,spalte)=1) XOR (umfeld>3 AND spielfeld(zeile,spalte)=1)) THEN LET arbeitsfeld(zeile,spalte)=0
+800             IF ((umfeld=2 OR umfeld=3) AND spielfeld(zeile,spalte)=1) THEN LET arbeitsfeld(zeile,spalte)=1
+820         NEXT zeile
+840     NEXT spalte
+900 END
