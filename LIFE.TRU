@@ -1,33 +1,43 @@
-100 REM INIT
-120     DIM spielfeld(22,22)
-140     DIM arbeitsfeld(22,22)
-160     CLEAR
-200 REM SEED
-220     RANDOMIZE
-240     FOR i=1 TO 150
-260         LET spalte=INT(RND*20+2)
-280         LET zeile=INT(RND*20+2)
-300         IF spielfeld(zeile,spalte)=1 THEN GOTO 260
-320         LET spielfeld(zeile,spalte)=1
-340     NEXT i
-400 REM Ausgabe
-420     FOR zeile=2 TO 21
-440         FOR spalte=2 TO 21
-460             PRINT spielfeld(zeile,spalte);
-480         NEXT spalte
-500         PRINT
-520     NEXT zeile
-600 REM Analyse und Regelanwendung
-620     FOR spalte=2 TO 21
-640         FOR zeile=2 TO 21
-660             LET umfeld=spielfeld(zeile-1,spalte)
-680             LET umfeld=umfeld+spielfeld(zeile-1,spalte+1)+spielfeld(zeile,spalte+1)
-700             LET umfeld=umfeld+spielfeld(zeile+1,spalte+1)+spielfeld(zeile+1,spalte)
-720             LET umfeld=umfeld+spielfeld(zeile+1,spalte-1)+spielfeld(zeile,spalte-1)
-740             LET umfeld=umfeld+spielfeld(zeile-1,spalte-1)
-760             IF (umfeld=3 AND spielfeld(zeile,spalte)=0) THEN LET arbeitsfeld(zeile,spalte)=1
-780             IF ((umfeld<2 AND spielfeld(zeile,spalte)=1) OR (umfeld>3 AND spielfeld(zeile,spalte)=1)) THEN LET arbeitsfeld(zeile,spalte)=0
-800             IF ((umfeld=2 OR umfeld=3) AND spielfeld(zeile,spalte)=1) THEN LET arbeitsfeld(zeile,spalte)=1
-820         NEXT zeile
-840     NEXT spalte
-900 END
+# coding: utf-8
+100  REM INIT
+120      DIM spielfeld(22,22)
+140      DIM arbeitsfeld(22,22)
+200  REM SEED
+220      RANDOMIZE
+240      FOR i=1 TO 150
+260          LET spalte=INT(RND*20+2)
+280          LET zeile=INT(RND*20+2)
+300          IF spielfeld(zeile,spalte)=1 THEN GOTO 260
+320          LET spielfeld(zeile,spalte)=1
+340      NEXT i
+400  REM Ausgabe
+420      CLEAR
+440      FOR zeile=2 TO 21
+460          FOR spalte=2 TO 21
+480              PRINT spielfeld(zeile,spalte);
+500          NEXT spalte
+520          PRINT
+540      NEXT zeile
+600  REM Analyse und Regelanwendung
+620      FOR spalte=2 TO 21
+640          FOR zeile=2 TO 21
+660              LET umfeld=spielfeld(zeile-1,spalte)
+680              LET umfeld=umfeld+spielfeld(zeile-1,spalte+1)+spielfeld(zeile,spalte+1)
+700              LET umfeld=umfeld+spielfeld(zeile+1,spalte+1)+spielfeld(zeile+1,spalte)
+720              LET umfeld=umfeld+spielfeld(zeile+1,spalte-1)+spielfeld(zeile,spalte-1)
+740              LET umfeld=umfeld+spielfeld(zeile-1,spalte-1)
+760              IF (umfeld=3 AND spielfeld(zeile,spalte)=0) THEN LET arbeitsfeld(zeile,spalte)=1
+780              IF ((umfeld<2 AND spielfeld(zeile,spalte)=1) OR (umfeld>3 AND spielfeld(zeile,spalte)=1)) THEN LET arbeitsfeld(zeile,spalte)=0
+800              IF ((umfeld=2 OR umfeld=3) AND spielfeld(zeile,spalte)=1) THEN LET arbeitsfeld(zeile,spalte)=1
+820          NEXT zeile
+840      NEXT spalte
+900  REM Arbeitsfeld auf Spielfeld kopieren, Arbeitsfeld löschen
+920      FOR spalte=2 TO 21
+940          FOR zeile=2 TO 21
+960              LET spielfeld(zeile,spalte)=arbeitsfeld(zeile,spalte)
+980              LET arbeitsfeld(zeile,spalte)=0
+1000         NEXT zeile
+1020     NEXT spalte
+1040 REM Rücksprung zur Ausgabe
+1060     GOTO 400
+1080 END
