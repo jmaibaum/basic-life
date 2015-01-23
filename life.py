@@ -8,12 +8,13 @@ import random
 class Cell(object):
     '''Representing a Cell that can be dead or alive.'''
 
-    def __init__(self, alive = False):
-        self.alive = alive
+    def __init__(self, lives = False):
+        self.lives = lives
+        self.livingNeighbours = 0
 
 
     def __repr__(self):
-        if self.alive:
+        if self.lives:
             return '*'
         else:
             return ' '
@@ -21,8 +22,8 @@ class Cell(object):
 
     def kill(self):
         '''Try to kill the cell, and return success or failure.'''
-        if self.alive:
-            self.alive = False
+        if self.lives:
+            self.lives = False
             return True
         else:
             return False
@@ -30,8 +31,8 @@ class Cell(object):
 
     def liven(self):
         '''Try to give birth to this cell, and return success or failure.'''
-        if not self.alive:
-            self.alive = True
+        if not self.lives:
+            self.lives = True
             return True
         else:
             return False
@@ -41,8 +42,27 @@ class Cell(object):
 class Field(object):
     '''Representing a Field for LIFE.'''
 
+
+    def countNeighbours(self):
+        for x, column in enumerate(self.field):
+            for y, cell in enumerate(column):
+                if (y > 0 and y < (len(self.field)-1)) and (x > 0 and x < (len(column)-1)):
+                    if cell.lives:
+                        self.field[x-1][y-1].livingNeighbours += 1
+                        self.field[x][y-1].livingNeighbours   += 1
+                        self.field[x+1][y-1].livingNeighbours += 1
+                        self.field[x-1][y].livingNeighbours   += 1
+                        self.field[x+1][y].livingNeighbours   += 1
+                        self.field[x-1][y+1].livingNeighbours += 1
+                        self.field[x][y+1].livingNeighbours   += 1
+                        self.field[x+1][y+1].livingNeighbours += 1
+
+
     def __init__(self, rows = 20, columns = 20, cells = None):
         '''Create a field, initialized with dead cells.'''
+
+        self.rows = rows
+        self.columns = columns
 
         # Set the internal counter for living cells.
         maxNumberOfCells = rows * columns
@@ -56,22 +76,47 @@ class Field(object):
                 self.cells = maxNumberOfCells
 
         # Initialize field with Cell()s.
-        self.field = [[Cell() for x in range(columns)] for x in range(rows)]
+        self.field = [[Cell() for x in range(columns + 2)] for x in range(rows + 2)]
 
         # Fill field with desired number of living cells.
         for n in range(self.cells):
-            while not self.field[random.randrange(columns)][random.randrange(rows)].liven():
+            while not self.field[random.randint(1, columns)][random.randint(1, rows)].liven():
                 continue
+
+        self.countNeighbours()
 
 
     def __repr__(self):
-        '''Print the field in a human readable form.'''
-        return '\n'.join([' '.join([str(cell) for cell in row]) for row in
-                          self.field])
+        '''Print the field.'''
+        return '\n'.join([' '.join([str(cell) for cell in row]) for row in self.field])
+
+
+def nextGeneration(field):
+    new = Field(field.rows, field.columns, 0)
+
+    for x, column in enumerate(field.field):
+        for y, cell in enumerate(column):
+            if cell.livingNeighbours == 3 or (cell.lives and cell.livingNeighbours == 2):
+                new.field[x][y].liven()
+                new.cells += 1
+
+    return new
 
 
 
 if __name__ == '__main__':
     spielfeld = Field(cells = 100)
+    print(spielfeld)
+    print('Lebende Zellen: {}'.format(spielfeld.cells))
+
+    spielfeld = nextGeneration(spielfeld)
+    print(spielfeld)
+    print('Lebende Zellen: {}'.format(spielfeld.cells))
+
+    spielfeld = nextGeneration(spielfeld)
+    print(spielfeld)
+    print('Lebende Zellen: {}'.format(spielfeld.cells))
+
+    spielfeld = nextGeneration(spielfeld)
     print(spielfeld)
     print('Lebende Zellen: {}'.format(spielfeld.cells))
