@@ -1,4 +1,3 @@
-# coding: utf-8
 100  REM INIT
 120      DIM spielfeld(22,22)
 140      DIM arbeitsfeld(22,22)
