@@ -10,7 +10,7 @@
 320          LET spielfeld(zeile,spalte)=1
 340      NEXT i
 400  REM Ausgabe
-420      CLEAR
+420      SET CURSOR 1,1
 440      FOR zeile=2 TO 21
 460          FOR spalte=2 TO 21
 480              PRINT spielfeld(zeile,spalte);
