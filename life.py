@@ -1,4 +1,6 @@
 #! /usr/bin/env python
+# -*- coding: utf-8
+#
 # Python version of LIFE.
 #
 # (c) 2015 Johannes Maibaum <jmaibaum@gmail.com>
