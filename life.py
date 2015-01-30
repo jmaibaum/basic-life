@@ -42,7 +42,6 @@ class Cell(object):
 class Field(object):
     '''Representing a Field for LIFE.'''
 
-
     def countNeighbours(self):
         for x, column in enumerate(self.field):
             for y, cell in enumerate(column):
@@ -92,31 +91,26 @@ class Field(object):
 
 
 def nextGeneration(field):
-    new = Field(field.rows, field.columns, 0)
-
+    newField = Field(field.rows, field.columns, 0)
     for x, column in enumerate(field.field):
         for y, cell in enumerate(column):
             if cell.livingNeighbours == 3 or (cell.lives and cell.livingNeighbours == 2):
-                new.field[x][y].liven()
-                new.cells += 1
+                newField.field[x][y].liven()
+                newField.cells += 1
 
-    return new
+    newField.countNeighbours()
+    return newField
+
 
 
 
 if __name__ == '__main__':
+    generation = 0
     spielfeld = Field(cells = 100)
-    print(spielfeld)
-    print('Lebende Zellen: {}'.format(spielfeld.cells))
 
-    spielfeld = nextGeneration(spielfeld)
-    print(spielfeld)
-    print('Lebende Zellen: {}'.format(spielfeld.cells))
-
-    spielfeld = nextGeneration(spielfeld)
-    print(spielfeld)
-    print('Lebende Zellen: {}'.format(spielfeld.cells))
-
-    spielfeld = nextGeneration(spielfeld)
-    print(spielfeld)
-    print('Lebende Zellen: {}'.format(spielfeld.cells))
+    while(True):
+        print(spielfeld)
+        generation += 1
+        print('Lebende Zellen: {}, Generation: {}'.format(spielfeld.cells,
+                                                          generation))
+        spielfeld = nextGeneration(spielfeld)
