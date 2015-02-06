@@ -1,14 +1,21 @@
 REM Init
     DIM spielfeld(22,22)
     DIM arbeitsfeld(22,22)
-REM Seed
-    RANDOMIZE
-    FOR i=1 TO 150
-        LET spalte=INT(RND*20+2)
-        LET zeile=INT(RND*20+2)
-        IF spielfeld(zeile,spalte)=1 THEN GOTO 260
-        LET spielfeld(zeile,spalte)=1
-    NEXT i
+!REM Seed
+!    RANDOMIZE
+!    FOR i=1 TO 150
+!        LET spalte=INT(RND*20+2)
+!        LET zeile=INT(RND*20+2)
+1        IF spielfeld(zeile,spalte)=1 THEN GOTO 260
+!        LET spielfeld(zeile,spalte)=1
+!    NEXT i
+REM Feld aufbauen
+    FOR zeile=2 TO 21
+        FOR spalte=2 TO 21
+            READ zelle
+            LET spielfeld(zeile,spalte)=zelle
+        NEXT spalte
+    NEXT zeile
 REM Ausgabe
     DO
     SET CURSOR 1,1
@@ -42,4 +49,24 @@ REM Arbeitsfeld auf Spielfeld kopieren, Arbeitsfeld löschen
     NEXT spalte
 REM Rücksprung zur Ausgabe
     LOOP
+DATA 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+DATA 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+DATA 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+DATA 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+DATA 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+DATA 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+DATA 0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+DATA 0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0
+DATA 0,0,0,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0
+DATA 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+DATA 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+DATA 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+DATA 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+DATA 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+DATA 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+DATA 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+DATA 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+DATA 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+DATA 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+DATA 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 END
