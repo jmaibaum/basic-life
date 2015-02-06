@@ -6,7 +6,7 @@ REM Init
 !    FOR i=1 TO 150
 !        LET spalte=INT(RND*20+2)
 !        LET zeile=INT(RND*20+2)
-1        IF spielfeld(zeile,spalte)=1 THEN GOTO 260
+!        IF spielfeld(zeile,spalte)=1 THEN GOTO 260
 !        LET spielfeld(zeile,spalte)=1
 !    NEXT i
 REM Feld aufbauen
