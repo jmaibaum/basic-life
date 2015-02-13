@@ -1,3 +1,9 @@
+/*
+ * JavaScript version of LIFE.
+ *
+ * Copyright (c) 2015 Johannes Maibaum <jmaibaum@gmail.com>
+ */
+
 // Wait for DOM, then initialize.
 document.addEventListener("DOMContentLoaded", init, false);
 
@@ -26,6 +32,7 @@ function init()
         context.stroke();
     }
 
+
     // Add EventListeners:
     canvas.addEventListener("mousedown", getMousePositionOnCanvas, false);
 }
@@ -40,9 +47,9 @@ function getMousePositionOnCanvas(event)
     // Firefox workaround:
     if (x == undefined && y == undefined) {
         x = event.clientX + document.body.scrollLeft +
-              document.documentElement.scrollLeft;
+            document.documentElement.scrollLeft;
         y = event.clientY + document.body.scrollTop +
-              document.documentElement.scrollTop;
+            document.documentElement.scrollTop;
     }
 
     x -= canvas.offsetLeft;
