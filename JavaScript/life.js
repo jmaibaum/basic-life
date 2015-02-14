@@ -6,7 +6,7 @@
 
 // Variables and types needed for LIFE:
 var cellsPerLine = 20;
-var randomCells = 150;
+var randomCells = 100;
 
 var Cell = function ()
 {
@@ -97,6 +97,26 @@ Field.prototype.fillWithRandomCells = function (number)
                 drawCell(row, column);
             }
         } while (!exists);
+    }
+}
+
+Field.prototype.nextGeneration = function ()
+{
+    for (var row = 1; row < this.rows; row++) {
+        for (var column = 1; column < this.columns; column++) {
+            if (this.data[row][column].lives) {
+                if ((this.data[row][column].neighbours < 2) ||
+                    (this.data[row][column].neighbours > 3)) {
+                    this.kill(row, column);
+                    drawCell(row, column, true);
+                }
+            } else {
+                if (this.data[row][column].neighbours == 3) {
+                    this.liven(row, column);
+                    drawCell(row, column);
+                }
+            }
+        }
     }
 }
 
@@ -230,4 +250,9 @@ function drawCell(row, column, dead)
     if (dead) {
         context.fillStyle = "#000000";
     }
+}
+
+// Wrapper for method
+function nextGeneration() {
+    field.nextGeneration();
 }
