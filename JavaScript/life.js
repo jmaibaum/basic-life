@@ -5,12 +5,12 @@
  */
 
 // Wait for DOM, then initialize.
-document.addEventListener("DOMContentLoaded", init, false);
+document.addEventListener("DOMContentLoaded", initialize, false);
 
 var cellsPerLine = 20;
 
 // Initialize everything.
-function init()
+function initialize()
 {
     // Prepare canvas:
     canvas = document.getElementById("board");
@@ -38,7 +38,11 @@ function init()
 }
 
 
-// Callback function to determine the mouse click coordinates on the canvas.
+/*
+ * Callback function to determine the mouse click coordinates on the canvas.
+ * Adapted from:
+ * http://miloq.blogspot.de/2011/05/coordinates-mouse-click-canvas.html
+ */
 function getMousePositionOnCanvas(event)
 {
     var x = event.x;

@@ -3,7 +3,7 @@
 #
 # Python version of LIFE.
 #
-# (c) 2015 Johannes Maibaum <jmaibaum@gmail.com>
+# Copyright (c) 2015 Johannes Maibaum <jmaibaum@gmail.com>
 
 import random
 
