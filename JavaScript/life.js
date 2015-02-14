@@ -5,15 +5,17 @@
  */
 
 // Variables and types needed for LIFE:
-var cellsPerLine = 10;
-var randomCells = 1;
+var cellsPerLine = 20;
+var randomCells = 150;
 
-var Cell = function () {
+var Cell = function ()
+{
     this.lives = false;
     this.neighbours = 0;
 }
 
-Cell.prototype.liven = function () {
+Cell.prototype.liven = function ()
+{
     if (!this.lives) {
         this.lives = true;
         return true;
@@ -22,7 +24,8 @@ Cell.prototype.liven = function () {
     }
 }
 
-Cell.prototype.kill = function () {
+Cell.prototype.kill = function ()
+{
     if (this.lives) {
         this.lives = false;
         return true;
@@ -31,7 +34,8 @@ Cell.prototype.kill = function () {
     }
 }
 
-var Field = function (rows, columns) {
+var Field = function (rows, columns)
+{
     this.rows  = rows;
     this.columns = columns;
     this.livingCells = 0;
@@ -46,47 +50,59 @@ var Field = function (rows, columns) {
     }
 }
 
-Field.prototype.liven = function (row, column) {
+Field.prototype.liven = function (row, column)
+{
     if (this.data[row][column].liven()) {
         this.livingCells++;
+        this.updateNeighbours(row, column, 1);
         return true;
     } else {
         return false;
     }
 }
 
-Field.prototype.kill = function (row, column) {
+Field.prototype.kill = function (row, column)
+{
     if (this.data[row][column].kill()) {
         this.livingCells--;
+        this.updateNeighbours(row, column, -1);
         return true;
     } else {
         return false;
     }
 }
 
-Field.prototype.countNeighbours = function (row, column) {
-    if (this.data[row][column].lives) {
-        this.data[row - 1][column - 1].neighbours += 1;
-        this.data[row - 1][column].neighbours     += 1;
-        this.data[row - 1][column + 1].neighbours += 1;
-        this.data[row][column - 1].neighbours     += 1;
-        this.data[row][column + 1].neighbours     += 1;
-        this.data[row + 1][column - 1].neighbours += 1;
-        this.data[row + 1][column].neighbours     += 1;
-        this.data[row + 1][column + 1].neighbours += 1;
-    }
+Field.prototype.updateNeighbours = function (row, column, increment)
+{
+    this.data[row - 1][column - 1].neighbours += increment;
+    this.data[row - 1][column].neighbours     += increment;
+    this.data[row - 1][column + 1].neighbours += increment;
+    this.data[row][column - 1].neighbours     += increment;
+    this.data[row][column + 1].neighbours     += increment;
+    this.data[row + 1][column - 1].neighbours += increment;
+    this.data[row + 1][column].neighbours     += increment;
+    this.data[row + 1][column + 1].neighbours += increment;
 }
 
-Field.prototype.countAllNeighbours = function () {
-    for (var row = 1; row <= this.rows; row++) {
-        for (var column = 1; column <= this.columns; column++) {
-            this.countNeighbours(row, column);
-        }
+Field.prototype.fillWithRandomCells = function (number)
+{
+    for (var i = 0; i < number; i++) {
+        do {
+            var exists = false;
+            var row    = Math.floor(Math.random() * cellsPerLine) + 1;
+            var column = Math.floor(Math.random() * cellsPerLine) + 1;
+
+            if (field.liven(row, column)) {
+                exists = true;
+                drawCell(row, column);
+            }
+        } while (!exists);
     }
 }
 
 // This is just for debugging.
-Field.prototype.print = function() {
+Field.prototype.print = function()
+{
     var printstring = '';
 
     for (var row = 0; row < this.rows + 2; row++) {
@@ -102,7 +118,7 @@ Field.prototype.print = function() {
 
             neighbourstring += this.data[row][column].neighbours + ' ';
         }
-        printstring += fieldstring + ' | ' + neighbourstring + '\n ';
+        printstring += fieldstring + '| ' + neighbourstring + '\n ';
     }
 
     console.log(printstring);
@@ -138,11 +154,7 @@ function initialize()
     }
 
     field = new Field(cellsPerLine, cellsPerLine);
-
-    fillWithRandomCells(randomCells);
-
-    field.countAllNeighbours();
-
+    field.fillWithRandomCells(randomCells);
     field.print();
 
 
@@ -171,7 +183,6 @@ function getMousePositionOnCanvas(event)
 
     x -= canvas.offsetLeft;
     y -= canvas.offsetTop;
-    //console.log("x:" + x + " y:" + y);
 
     var coords = convertClickToFieldCoordinates(x, y);
     var row = coords[0];
@@ -189,8 +200,8 @@ function getMousePositionOnCanvas(event)
 
 
 function convertClickToFieldCoordinates(x, y) {
-    var row = Math.floor(y / boardDivision);
-    var column = Math.floor(x / boardDivision);
+    var row = Math.floor(y / boardDivision) + 1;
+    var column = Math.floor(x / boardDivision) + 1;
 
     // Ensure that we get valid coordinates:
     if (row == 11) {
@@ -207,8 +218,8 @@ function convertClickToFieldCoordinates(x, y) {
 // Draw a cell using field coordinates.
 function drawCell(row, column, dead)
 {
-    var cellx = Math.floor(column * boardDivision) + 1;
-    var celly = Math.floor(row * boardDivision) + 1;
+    var cellx = Math.floor(column * boardDivision) - boardDivision + 1;
+    var celly = Math.floor(row * boardDivision) - boardDivision + 1;
 
     if (dead) {
         context.fillStyle = "#ffffff";
@@ -218,22 +229,5 @@ function drawCell(row, column, dead)
 
     if (dead) {
         context.fillStyle = "#000000";
-    }
-}
-
-
-function fillWithRandomCells(number)
-{
-    for (var i = 0; i < number; i++) {
-        do {
-            var exists = false;
-            var row    = Math.floor(Math.random() * cellsPerLine) + 1;
-            var column = Math.floor(Math.random() * cellsPerLine) + 1;
-
-            if (field.liven(row, column)) {
-                exists = true;
-                drawCell(row, column);
-            }
-        } while (!exists);
     }
 }
