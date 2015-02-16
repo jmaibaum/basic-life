@@ -6,8 +6,9 @@
 
 // Variables and types needed for LIFE:
 var cellsPerLine = 20;
-var randomCells = 0;
+var randomCells = 100;
 
+// Custom datatypes for Cells and the playing Field:
 var Cell = function ()
 {
     this.lives = false;
@@ -145,7 +146,7 @@ Field.prototype.nextGeneration = function ()
         }
     }
     this.countAllNeighbours();
-    this.print();
+    //this.print();
 }
 
 // This is just for debugging.
@@ -203,7 +204,7 @@ function initialize()
 
     field = new Field(cellsPerLine, cellsPerLine);
     field.fillWithRandomCells(randomCells);
-    field.print();
+    //field.print();
 
 
     // Add event listeners:
@@ -235,15 +236,14 @@ function getMousePositionOnCanvas(event)
     var coords = convertClickToFieldCoordinates(x, y);
     var row = coords[0];
     var column = coords[1];
-    console.log(row, column);
 
     if (field.liven(row, column, true)) {
         drawCell(row, column);
-        field.print();
+        //field.print();
     } else {
         field.kill(row, column, true);
         drawCell(row, column, true);
-        field.print();
+        //field.print();
     }
 }
 
@@ -253,10 +253,10 @@ function convertClickToFieldCoordinates(x, y) {
     var column = Math.floor(x / boardDivision) + 1;
 
     // Ensure that we get valid coordinates:
-    if (row == 11) {
+    if (row > field.rows) {
         row--;
     }
-    if (column == 11) {
+    if (column > field.columns) {
         column--;
     }
 
@@ -264,7 +264,7 @@ function convertClickToFieldCoordinates(x, y) {
 }
 
 
-// Draw a cell using field coordinates.
+// Draw a cell using field coordinates:
 function drawCell(row, column, dead)
 {
     var cellx = Math.floor(column * boardDivision) - boardDivision + 1;
@@ -281,7 +281,7 @@ function drawCell(row, column, dead)
     }
 }
 
-// Wrapper for method
+// Wrapper for next generation method:
 function nextGeneration() {
     field.nextGeneration();
 }
