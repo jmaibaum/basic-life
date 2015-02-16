@@ -6,7 +6,7 @@
 
 // Variables and types needed for LIFE:
 var cellsPerLine = 20;
-var randomCells = 100;
+var randomCells = 0;
 
 var Cell = function ()
 {
@@ -50,22 +50,26 @@ var Field = function (rows, columns)
     }
 }
 
-Field.prototype.liven = function (row, column)
+Field.prototype.liven = function (row, column, update)
 {
     if (this.data[row][column].liven()) {
         this.livingCells++;
-        this.updateNeighbours(row, column, 1);
+        if (update) {
+            this.updateNeighbours(row, column, 1);
+        }
         return true;
     } else {
         return false;
     }
 }
 
-Field.prototype.kill = function (row, column)
+Field.prototype.kill = function (row, column, update)
 {
     if (this.data[row][column].kill()) {
         this.livingCells--;
-        this.updateNeighbours(row, column, -1);
+        if (update) {
+            this.updateNeighbours(row, column, -1);
+        }
         return true;
     } else {
         return false;
@@ -84,6 +88,28 @@ Field.prototype.updateNeighbours = function (row, column, increment)
     this.data[row + 1][column + 1].neighbours += increment;
 }
 
+Field.prototype.resetAllNeighbours = function()
+{
+    for (var row in this.data) {
+        for (var column in this.data[row]) {
+            this.data[row][column].neighbours = 0;
+        }
+    }
+}
+
+Field.prototype.countAllNeighbours = function ()
+{
+    this.resetAllNeighbours();
+
+    for (var row = 1; row <= this.rows; row++) {
+        for (var column = 1; column <= this.columns; column++) {
+            if (this.data[row][column].lives) {
+                this.updateNeighbours(row, column, 1);
+            }
+        }
+    }
+}
+
 Field.prototype.fillWithRandomCells = function (number)
 {
     for (var i = 0; i < number; i++) {
@@ -92,7 +118,7 @@ Field.prototype.fillWithRandomCells = function (number)
             var row    = Math.floor(Math.random() * cellsPerLine) + 1;
             var column = Math.floor(Math.random() * cellsPerLine) + 1;
 
-            if (field.liven(row, column)) {
+            if (field.liven(row, column, true)) {
                 exists = true;
                 drawCell(row, column);
             }
@@ -102,8 +128,8 @@ Field.prototype.fillWithRandomCells = function (number)
 
 Field.prototype.nextGeneration = function ()
 {
-    for (var row = 1; row < this.rows; row++) {
-        for (var column = 1; column < this.columns; column++) {
+    for (var row = 1; row <= this.rows; row++) {
+        for (var column = 1; column <= this.columns; column++) {
             if (this.data[row][column].lives) {
                 if ((this.data[row][column].neighbours < 2) ||
                     (this.data[row][column].neighbours > 3)) {
@@ -118,6 +144,8 @@ Field.prototype.nextGeneration = function ()
             }
         }
     }
+    this.countAllNeighbours();
+    this.print();
 }
 
 // This is just for debugging.
@@ -207,12 +235,13 @@ function getMousePositionOnCanvas(event)
     var coords = convertClickToFieldCoordinates(x, y);
     var row = coords[0];
     var column = coords[1];
+    console.log(row, column);
 
-    if (field.liven(row, column)) {
+    if (field.liven(row, column, true)) {
         drawCell(row, column);
         field.print();
     } else {
-        field.kill(row, column);
+        field.kill(row, column, true);
         drawCell(row, column, true);
         field.print();
     }
