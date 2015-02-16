@@ -20,9 +20,8 @@ Cell.prototype.liven = function ()
     if (!this.lives) {
         this.lives = true;
         return true;
-    } else {
+    } else
         return false;
-    }
 }
 
 Cell.prototype.kill = function ()
@@ -30,9 +29,8 @@ Cell.prototype.kill = function ()
     if (this.lives) {
         this.lives = false;
         return true;
-    } else {
+    } else
         return false;
-    }
 }
 
 var Field = function (rows, columns)
@@ -45,9 +43,8 @@ var Field = function (rows, columns)
     for (var i = 0; i < this.rows + 2; i++) {
         this.data[i] = [];
 
-        for (var j = 0; j < this.columns + 2; j++) {
+        for (var j = 0; j < this.columns + 2; j++)
             this.data[i].push(new Cell());
-        }
     }
 }
 
@@ -55,26 +52,26 @@ Field.prototype.liven = function (row, column, update)
 {
     if (this.data[row][column].liven()) {
         this.livingCells++;
-        if (update) {
+
+        if (update)
             this.updateNeighbours(row, column, 1);
-        }
+
         return true;
-    } else {
+    } else
         return false;
-    }
 }
 
 Field.prototype.kill = function (row, column, update)
 {
     if (this.data[row][column].kill()) {
         this.livingCells--;
-        if (update) {
+
+        if (update)
             this.updateNeighbours(row, column, -1);
-        }
+
         return true;
-    } else {
+    } else
         return false;
-    }
 }
 
 Field.prototype.updateNeighbours = function (row, column, increment)
@@ -91,24 +88,19 @@ Field.prototype.updateNeighbours = function (row, column, increment)
 
 Field.prototype.resetAllNeighbours = function()
 {
-    for (var row in this.data) {
-        for (var column in this.data[row]) {
+    for (var row in this.data)
+        for (var column in this.data[row])
             this.data[row][column].neighbours = 0;
-        }
-    }
 }
 
 Field.prototype.countAllNeighbours = function ()
 {
     this.resetAllNeighbours();
 
-    for (var row = 1; row <= this.rows; row++) {
-        for (var column = 1; column <= this.columns; column++) {
-            if (this.data[row][column].lives) {
+    for (var row = 1; row <= this.rows; row++)
+        for (var column = 1; column <= this.columns; column++)
+            if (this.data[row][column].lives)
                 this.updateNeighbours(row, column, 1);
-            }
-        }
-    }
 }
 
 Field.prototype.fillWithRandomCells = function (number)
@@ -146,7 +138,6 @@ Field.prototype.nextGeneration = function ()
         }
     }
     this.countAllNeighbours();
-    //this.print();
 }
 
 // This is just for debugging.
@@ -159,11 +150,10 @@ Field.prototype.print = function()
         var neighbourstring = '';
 
         for (var column = 0; column < this.columns + 2; column++) {
-            if (this.data[row][column].lives) {
+            if (this.data[row][column].lives)
                 fieldstring += '* ';
-            } else {
+            else
                 fieldstring += '  ';
-            }
 
             neighbourstring += this.data[row][column].neighbours + ' ';
         }
@@ -204,7 +194,6 @@ function initialize()
 
     field = new Field(cellsPerLine, cellsPerLine);
     field.fillWithRandomCells(randomCells);
-    //field.print();
 
 
     // Add event listeners:
@@ -237,13 +226,11 @@ function getMousePositionOnCanvas(event)
     var row = coords[0];
     var column = coords[1];
 
-    if (field.liven(row, column, true)) {
+    if (field.liven(row, column, true))
         drawCell(row, column);
-        //field.print();
-    } else {
+    else {
         field.kill(row, column, true);
         drawCell(row, column, true);
-        //field.print();
     }
 }
 
@@ -253,12 +240,11 @@ function convertClickToFieldCoordinates(x, y) {
     var column = Math.floor(x / boardDivision) + 1;
 
     // Ensure that we get valid coordinates:
-    if (row > field.rows) {
+    if (row > field.rows)
         row--;
-    }
-    if (column > field.columns) {
+
+    if (column > field.columns)
         column--;
-    }
 
     return [row, column];
 }
@@ -270,15 +256,13 @@ function drawCell(row, column, dead)
     var cellx = Math.floor(column * boardDivision) - boardDivision + 1;
     var celly = Math.floor(row * boardDivision) - boardDivision + 1;
 
-    if (dead) {
+    if (dead)
         context.fillStyle = "#ffffff";
-    }
 
     context.fillRect(cellx, celly, cellSize, cellSize);
 
-    if (dead) {
+    if (dead)
         context.fillStyle = "#000000";
-    }
 }
 
 // Wrapper for next generation method:
