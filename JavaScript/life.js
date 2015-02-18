@@ -48,7 +48,7 @@ var Field = function (rows, columns)
     }
 }
 
-Field.prototype.liven = function (row, column, update)
+Field.prototype.livenCell = function (row, column, update)
 {
     if (this.data[row][column].liven()) {
         this.livingCells++;
@@ -61,7 +61,7 @@ Field.prototype.liven = function (row, column, update)
         return false;
 }
 
-Field.prototype.kill = function (row, column, update)
+Field.prototype.killCell = function (row, column, update)
 {
     if (this.data[row][column].kill()) {
         this.livingCells--;
@@ -111,7 +111,7 @@ Field.prototype.fillWithRandomCells = function (number)
             var row    = Math.floor(Math.random() * cellsPerLine) + 1;
             var column = Math.floor(Math.random() * cellsPerLine) + 1;
 
-            if (field.liven(row, column, true)) {
+            if (field.livenCell(row, column, true)) {
                 exists = true;
                 drawCell(row, column);
             }
@@ -126,12 +126,12 @@ Field.prototype.nextGeneration = function ()
             if (this.data[row][column].lives) {
                 if ((this.data[row][column].neighbours < 2) ||
                     (this.data[row][column].neighbours > 3)) {
-                    this.kill(row, column);
+                    this.killCell(row, column);
                     drawCell(row, column, true);
                 }
             } else {
                 if (this.data[row][column].neighbours == 3) {
-                    this.liven(row, column);
+                    this.livenCell(row, column);
                     drawCell(row, column);
                 }
             }
@@ -226,10 +226,10 @@ function getMousePositionOnCanvas(event)
     var row = coords[0];
     var column = coords[1];
 
-    if (field.liven(row, column, true))
+    if (field.livenCell(row, column, true))
         drawCell(row, column);
     else {
-        field.kill(row, column, true);
+        field.killCell(row, column, true);
         drawCell(row, column, true);
     }
 }
