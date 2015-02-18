@@ -5,7 +5,6 @@
  */
 
 // Variables and types needed for LIFE:
-var cellsPerLine = 20;
 var randomCells = 100;
 
 // Custom datatypes for Cells and the playing Field:
