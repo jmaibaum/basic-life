@@ -6,6 +6,7 @@
 
 // Variables and types needed for LIFE:
 Settings.randomCells = 100;
+Settings.cellColor.push("#000000");  // 'living' Cell
 
 // Specialised methods for LIFE Cells:
 Cell.prototype.liven = function ()

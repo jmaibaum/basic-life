@@ -10,8 +10,9 @@ var Settings = {
     boardSideLenght: 0,
     canvas: undefined,
     context: undefined,
-    cellsPerLine: 50,  // Devides the canvas into 'n' cellsPerLine
-    cellSize: 0
+    cellsPerLine: 50,       // Devides the canvas into 'n' cellsPerLine.
+    cellSize: 0,
+    cellColor: ["#ffffff"]  // Needs to be extended by final game with colors.
 };
 
 // Wait for DOM, then initialize.
@@ -140,19 +141,16 @@ function convertClickToFieldCoordinates(x, y) {
 // Draw a cell using field coordinates:
 function drawCell(row, column, state)
 {
+    // Set Cell color:
+    Settings.context.fillStyle = Settings.cellColor[state];
+
     var cellx = Math.floor(column * Settings.boardDivision)
         - Settings.boardDivision + 1;
     var celly = Math.floor(row * Settings.boardDivision)
         - Settings.boardDivision + 1;
 
-    if (state == 0)
-        Settings.context.fillStyle = "#ffffff";
-
     Settings.context.fillRect(cellx, celly, Settings.cellSize,
                               Settings.cellSize);
-
-    if (state == 0)
-        Settings.context.fillStyle = "#000000";
 }
 
 
