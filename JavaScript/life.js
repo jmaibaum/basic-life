@@ -10,14 +10,14 @@ var randomCells = 100;
 // Custom datatypes for Cells and the playing Field:
 var Cell = function ()
 {
-    this.lives = false;
+    this.state = 0;  // 0 = 'dead'; 1 = 'alive'.
     this.neighbours = 0;
 }
 
 Cell.prototype.liven = function ()
 {
-    if (!this.lives) {
-        this.lives = true;
+    if (!this.state) {  // if cell is 'dead'...
+        this.state = 1;
         return true;
     } else
         return false;
@@ -25,8 +25,8 @@ Cell.prototype.liven = function ()
 
 Cell.prototype.kill = function ()
 {
-    if (this.lives) {
-        this.lives = false;
+    if (this.state) {  // if cell is 'alive'...
+        this.state = 0;
         return true;
     } else
         return false;
@@ -98,7 +98,7 @@ Field.prototype.countAllNeighbours = function ()
 
     for (var row = 1; row <= this.rows; row++)
         for (var column = 1; column <= this.columns; column++)
-            if (this.data[row][column].lives)
+            if (this.data[row][column].state)  // if cell is 'alive'...
                 this.updateNeighbours(row, column, 1);
 }
 
@@ -122,7 +122,7 @@ Field.prototype.nextGeneration = function ()
 {
     for (var row = 1; row <= this.rows; row++) {
         for (var column = 1; column <= this.columns; column++) {
-            if (this.data[row][column].lives) {
+            if (this.data[row][column].state) {  // if cell is 'alive'...
                 if ((this.data[row][column].neighbours < 2) ||
                     (this.data[row][column].neighbours > 3)) {
                     this.killCell(row, column);
@@ -149,7 +149,7 @@ Field.prototype.print = function()
         var neighbourstring = '';
 
         for (var column = 0; column < this.columns + 2; column++) {
-            if (this.data[row][column].lives)
+            if (this.data[row][column].state)  // if cell is 'alive'...
                 fieldstring += '* ';
             else
                 fieldstring += '  ';
