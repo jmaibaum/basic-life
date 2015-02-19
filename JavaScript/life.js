@@ -5,19 +5,13 @@
  */
 
 // Variables and types needed for LIFE:
-var randomCells = 100;
+Settings.randomCells = 100;
 
-// Custom datatypes for Cells and the playing Field:
-var Cell = function ()
-{
-    this.state = 0;  // 0 = 'dead'; 1 = 'alive'.
-    this.neighbours = 0;
-}
-
+// Specialised methods for LIFE Cells:
 Cell.prototype.liven = function ()
 {
-    if (!this.state) {  // if cell is 'dead'...
-        this.state = 1;
+    if (!this.state) {   // if cell is 'dead'...
+        this.state = 1;  // 1 = 'alive'.
         return true;
     } else
         return false;
@@ -25,29 +19,35 @@ Cell.prototype.liven = function ()
 
 Cell.prototype.kill = function ()
 {
-    if (this.state) {  // if cell is 'alive'...
-        this.state = 0;
+    if (this.state) {    // if cell is 'alive'...
+        this.state = 0;  // 0 = 'dead'.
         return true;
     } else
         return false;
 }
 
-var Field = function (rows, columns)
+// Specialised LifeField, inherited from Field:
+var LifeField = function (rows, columns)
 {
-    this.rows  = rows;
-    this.columns = columns;
+    Field.call(this, rows, columns);  // Call the baseclass constructor.
+
     this.livingCells = 0;
-    this.data = [];
+}
+LifeField.prototype = Object.create(Field.prototype);
+LifeField.prototype.constructor = LifeField;
 
-    for (var i = 0; i < this.rows + 2; i++) {
-        this.data[i] = [];
-
-        for (var j = 0; j < this.columns + 2; j++)
-            this.data[i].push(new Cell());
-    }
+LifeField.prototype.createCell = function (row, column, state, update)
+{
+    // Map state to living or killing a cell:
+    if (state == 1)
+        return this.livenCell(row, column, update);
+    else if (state == 0)
+        return this.killCell(row, column, update);
+    else
+        return false;
 }
 
-Field.prototype.livenCell = function (row, column, update)
+LifeField.prototype.livenCell = function (row, column, update)
 {
     if (this.data[row][column].liven()) {
         this.livingCells++;
@@ -60,7 +60,7 @@ Field.prototype.livenCell = function (row, column, update)
         return false;
 }
 
-Field.prototype.killCell = function (row, column, update)
+LifeField.prototype.killCell = function (row, column, update)
 {
     if (this.data[row][column].kill()) {
         this.livingCells--;
@@ -73,26 +73,7 @@ Field.prototype.killCell = function (row, column, update)
         return false;
 }
 
-Field.prototype.updateNeighbours = function (row, column, increment)
-{
-    this.data[row - 1][column - 1].neighbours += increment;
-    this.data[row - 1][column].neighbours     += increment;
-    this.data[row - 1][column + 1].neighbours += increment;
-    this.data[row][column - 1].neighbours     += increment;
-    this.data[row][column + 1].neighbours     += increment;
-    this.data[row + 1][column - 1].neighbours += increment;
-    this.data[row + 1][column].neighbours     += increment;
-    this.data[row + 1][column + 1].neighbours += increment;
-}
-
-Field.prototype.resetAllNeighbours = function()
-{
-    for (var row in this.data)
-        for (var column in this.data[row])
-            this.data[row][column].neighbours = 0;
-}
-
-Field.prototype.countAllNeighbours = function ()
+LifeField.prototype.countAllNeighbours = function ()
 {
     this.resetAllNeighbours();
 
@@ -102,23 +83,7 @@ Field.prototype.countAllNeighbours = function ()
                 this.updateNeighbours(row, column, 1);
 }
 
-Field.prototype.fillWithRandomCells = function (number)
-{
-    for (var i = 0; i < number; i++) {
-        do {
-            var exists = false;
-            var row    = Math.floor(Math.random() * cellsPerLine) + 1;
-            var column = Math.floor(Math.random() * cellsPerLine) + 1;
-
-            if (field.livenCell(row, column, true)) {
-                exists = true;
-                drawCell(row, column);
-            }
-        } while (!exists);
-    }
-}
-
-Field.prototype.nextGeneration = function ()
+LifeField.prototype.nextGeneration = function ()
 {
     for (var row = 1; row <= this.rows; row++) {
         for (var column = 1; column <= this.columns; column++) {
@@ -126,12 +91,12 @@ Field.prototype.nextGeneration = function ()
                 if ((this.data[row][column].neighbours < 2) ||
                     (this.data[row][column].neighbours > 3)) {
                     this.killCell(row, column);
-                    drawCell(row, column, true);
+                    drawCell(row, column, 0);
                 }
             } else {
                 if (this.data[row][column].neighbours == 3) {
                     this.livenCell(row, column);
-                    drawCell(row, column);
+                    drawCell(row, column, 1);
                 }
             }
         }
@@ -140,7 +105,7 @@ Field.prototype.nextGeneration = function ()
 }
 
 // This is just for debugging.
-Field.prototype.print = function()
+LifeField.prototype.print = function()
 {
     var printstring = '';
 
@@ -163,108 +128,27 @@ Field.prototype.print = function()
     console.log(this.livingCells + ' lebende Zellen.');
 }
 
-
-
-// Wait for DOM, then initialize.
-document.addEventListener("DOMContentLoaded", initialize, false);
-
-// Initialize everything.
-function initialize()
+LifeField.prototype.fillWithRandomCells = function (number)
 {
-    // Prepare canvas:
-    canvas = document.getElementById("board");
-    context = canvas.getContext("2d");
+    for (var i = 0; i < number; i++) {
+        do {
+            var exists = false;
+            var row    = Math.floor(Math.random() * Settings.cellsPerLine) + 1;
+            var column = Math.floor(Math.random() * Settings.cellsPerLine) + 1;
 
-    boardSideLength = canvas.width;  // Assume that canvas is quadratic.
-    boardDivision = Math.floor(boardSideLength / cellsPerLine);
-    cellSize = boardDivision - 2;
-
-    // Draw cell grid:
-    context.strokeStyle = "#cccccc";
-    context.lineWidth = 2;
-
-    for (var i = 0; i <= boardSideLength; i = i + boardDivision) {
-        context.moveTo(0, i);
-        context.lineTo(boardSideLength, i);
-        context.moveTo(i, 0);
-        context.lineTo(i, boardSideLength);
-        context.stroke();
-    }
-
-    field = new Field(cellsPerLine, cellsPerLine);
-    field.fillWithRandomCells(randomCells);
-
-
-    // Add event listeners:
-    canvas.addEventListener("mousedown", getMousePositionOnCanvas, false);
-}
-
-
-/*
- * Callback function to determine the mouse click coordinates on the canvas.
- * Adapted from:
- * http://miloq.blogspot.de/2011/05/coordinates-mouse-click-canvas.html
- */
-function getMousePositionOnCanvas(event)
-{
-    var x = event.x;
-    var y = event.y;
-
-    // Firefox workaround:
-    if (x == undefined && y == undefined) {
-        x = event.clientX + document.body.scrollLeft +
-            document.documentElement.scrollLeft;
-        y = event.clientY + document.body.scrollTop +
-            document.documentElement.scrollTop;
-    }
-
-    x -= canvas.offsetLeft;
-    y -= canvas.offsetTop;
-
-    var coords = convertClickToFieldCoordinates(x, y);
-    var row = coords[0];
-    var column = coords[1];
-
-    if (field.livenCell(row, column, true))
-        drawCell(row, column);
-    else {
-        field.killCell(row, column, true);
-        drawCell(row, column, true);
+            if (field.livenCell(row, column, true)) {
+                exists = true;
+                drawCell(row, column, 1);
+            }
+        } while (!exists);
     }
 }
 
-
-function convertClickToFieldCoordinates(x, y) {
-    var row = Math.floor(y / boardDivision) + 1;
-    var column = Math.floor(x / boardDivision) + 1;
-
-    // Ensure that we get valid coordinates:
-    if (row > field.rows)
-        row--;
-
-    if (column > field.columns)
-        column--;
-
-    return [row, column];
-}
-
-
-// Draw a cell using field coordinates:
-function drawCell(row, column, dead)
+// LIFE specific initialization, called from main initialization function:
+function finishInitialization()
 {
-    var cellx = Math.floor(column * boardDivision) - boardDivision + 1;
-    var celly = Math.floor(row * boardDivision) - boardDivision + 1;
-
-    if (dead)
-        context.fillStyle = "#ffffff";
-
-    context.fillRect(cellx, celly, cellSize, cellSize);
-
-    if (dead)
-        context.fillStyle = "#000000";
+    field.fillWithRandomCells(Settings.randomCells);
 }
 
-// Wrapper for next generation method:
-function nextGeneration() {
-    field.nextGeneration();
-}
+// Create the playing field.
+var field = new LifeField(Settings.cellsPerLine, Settings.cellsPerLine);
