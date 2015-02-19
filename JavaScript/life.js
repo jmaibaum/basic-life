@@ -54,7 +54,7 @@ LifeField.prototype.livenCell = function (row, column, update)
         this.livingCells++;
 
         if (update)
-            this.updateNeighbours(row, column, 1);
+            this.updateNeighbours(row, column, update);
 
         return true;
     } else
@@ -67,7 +67,7 @@ LifeField.prototype.killCell = function (row, column, update)
         this.livingCells--;
 
         if (update)
-            this.updateNeighbours(row, column, -1);
+            this.updateNeighbours(row, column, update);
 
         return true;
     } else
@@ -137,7 +137,7 @@ LifeField.prototype.fillWithRandomCells = function (number)
             var row    = Math.floor(Math.random() * Settings.cellsPerLine) + 1;
             var column = Math.floor(Math.random() * Settings.cellsPerLine) + 1;
 
-            if (field.livenCell(row, column, true)) {
+            if (field.livenCell(row, column, 1)) {
                 exists = true;
                 drawCell(row, column, 1);
             }

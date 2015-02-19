@@ -10,9 +10,10 @@ var Settings = {
     boardSideLenght: 0,
     canvas: undefined,
     context: undefined,
-    cellsPerLine: 50,       // Devides the canvas into 'n' cellsPerLine.
+    cellsPerLine: 50,        // Devides the canvas into 'n' cellsPerLine.
     cellSize: 0,
-    cellColor: ["#ffffff"]  // Needs to be extended by final game with colors.
+    cellColor: ["#ffffff"],  // Needs to be extended by final game with colors.
+    cellToDraw: 1            // Default cell type for drawing operations.
 };
 
 // Wait for DOM, then initialize.
@@ -113,13 +114,13 @@ function getMousePositionOnCanvas(event)
     y -= Settings.canvas.offsetTop;
 
     var coords = convertClickToFieldCoordinates(x, y);
-    var row    = coords[0],
-        column = coords[1];
+    var row    = coords[0];
+    var column = coords[1];
 
-    if (field.createCell(row, column, 1, true))
-        drawCell(row, column, 1);
+    if (field.createCell(row, column, Settings.cellToDraw, 1))
+        drawCell(row, column, Settings.cellToDraw);
     else {
-        field.createCell(row, column, 0, true);
+        field.createCell(row, column, 0, -1);
         drawCell(row, column, 0);
     }
 }
