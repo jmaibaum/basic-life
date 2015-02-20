@@ -1,6 +1,6 @@
 /*
- * This file contains common variables and datatypes used by all cellular
- * automata in this folder.
+ * This file contains common variables, datatypes and functions used by all
+ * cellular automata in this folder.
  *
  * Copyright (c) 2015 Johannes Maibaum <jmaibaum@gmail.com>
  */
@@ -13,7 +13,9 @@ var Settings = {
     cellsPerLine: 50,        // Devides the canvas into 'n' cellsPerLine.
     cellSize: 0,
     cellColor: ["#ffffff"],  // Needs to be extended by final game with colors.
-    cellToDraw: 1            // Default cell type for drawing operations.
+    cellToDraw: 1,           // Default cell type for drawing operations.
+    intervalID: 0,
+    speed: 100
 };
 
 // Wait for DOM, then initialize.
@@ -156,6 +158,39 @@ function drawCell(row, column, state)
 
 
 // Wrapper for next generation method:
-function nextGeneration() {
+function nextGeneration()
+{
+    if (!Settings.intervalID)
+        field.nextGeneration();
+    else
+        stopAutomata();
+}
+
+function changeSpeed(selectItem)
+{
+    Settings.speed = selectItem.value;
+
+    if (Settings.intervalID) {
+        stopAutomata();
+        runAutomata();
+    }
+
+}
+
+function nextGenerationFromInterval()
+{
     field.nextGeneration();
+}
+
+function runAutomata()
+{
+    if (!Settings.intervalID)
+        Settings.intervalID = window.setInterval(nextGenerationFromInterval,
+                                                 Settings.speed);
+}
+
+function stopAutomata()
+{
+    window.clearInterval(Settings.intervalID);
+    Settings.intervalID = 0;
 }

@@ -5,7 +5,7 @@
  */
 
 // Variables and types needed for LIFE:
-Settings.randomCells = 100;
+Settings.randomCells = 500;
 Settings.cellColor.push("#000000");  // 'living' Cell
 
 // Specialised methods for LIFE Cells:

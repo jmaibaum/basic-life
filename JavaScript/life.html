@@ -18,6 +18,16 @@
       </canvas>
     </div>
     <div>
+      <button id="RunButton" type="button" onClick="runAutomata()">Run</button>
+      <button id="StopButton" type="button" onClick="stopAutomata()">
+        Stop</button>
+      <select id="SpeedSelect" onChange="changeSpeed(this);">
+        <option value="0">As fast as possible</option>
+        <option value="10">10ms / Generation</option>
+        <option value="100" selected>100ms / Generation</option>
+        <option value="500">0.5s / Generation</option>
+        <option value="1000">1s / Generation</option>
+      </select>
       <button id="NextGenerationButton" type="button"
               onClick="nextGeneration();">Next Generation</button>
     </div>
