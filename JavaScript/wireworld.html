@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Wireworld in JavaScript</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <script src="common.js"></script>
+    <script src="wireworld.js"></script>
+  </head>
+  <body>
+    <h1>Wireworld</h1>
+    <div>
+      <p><em>Choose a cell type and then click on a field to draw.</em></p>
+      <p>
+        <button id="WireCellButton" type="button"
+                onClick="changeDrawingColor(1);">Wire</button>
+        <button id="TailCellButton" type="button"
+                onClick="changeDrawingColor(2);">Tail</button>
+        <button id="HeadCellButton" type="button"
+                onClick="changeDrawingColor(3);">Head</button>
+        Current cell type: <strong id="CurrentCellType">Wire</strong>.
+      </p>
+    </div>
+    <!-- Be sure that the canvas is quadratic, i.e.: width = height ! -->
+    <div>
+      <canvas id="board" width="500" height="500">
+        This Wireworld implementation does only run in HTML5 capable browsers.
+      </canvas>
+    </div>
+    <div>
+      <button id="NextGenerationButton" type="button"
+              onClick="nextGeneration();">Next Generation</button>
+    </div>
+  </body>
+</html>
