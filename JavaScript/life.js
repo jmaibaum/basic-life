@@ -102,7 +102,25 @@ LifeField.prototype.nextGeneration = function ()
             }
         }
     }
+
     this.countAllNeighbours();
+    this.increaseGeneration();
+}
+
+LifeField.prototype.fillWithRandomCells = function (number)
+{
+    for (var i = 0; i < number; i++) {
+        do {
+            var exists = false;
+            var row    = Math.floor(Math.random() * Settings.cellsPerLine) + 1;
+            var column = Math.floor(Math.random() * Settings.cellsPerLine) + 1;
+
+            if (field.livenCell(row, column, 1)) {
+                exists = true;
+                drawCell(row, column, 1);
+            }
+        } while (!exists);
+    }
 }
 
 // This is just for debugging.
@@ -129,27 +147,12 @@ LifeField.prototype.print = function()
     console.log(this.livingCells + ' lebende Zellen.');
 }
 
-LifeField.prototype.fillWithRandomCells = function (number)
-{
-    for (var i = 0; i < number; i++) {
-        do {
-            var exists = false;
-            var row    = Math.floor(Math.random() * Settings.cellsPerLine) + 1;
-            var column = Math.floor(Math.random() * Settings.cellsPerLine) + 1;
+// Create the playing field.
+var field = new LifeField(Settings.cellsPerLine, Settings.cellsPerLine);
 
-            if (field.livenCell(row, column, 1)) {
-                exists = true;
-                drawCell(row, column, 1);
-            }
-        } while (!exists);
-    }
-}
 
 // LIFE specific initialization, called from main initialization function:
 function finishInitialization()
 {
     field.fillWithRandomCells(Settings.randomCells);
 }
-
-// Create the playing field.
-var field = new LifeField(Settings.cellsPerLine, Settings.cellsPerLine);

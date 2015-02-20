@@ -32,6 +32,8 @@ var Field = function (rows, columns)
 {
     this.rows  = rows;
     this.columns = columns;
+    this.generation = 0;
+    this.generationHTML = undefined;  // Needs to be set by initialize().
     this.data = [];
 
     for (var i = 0; i < this.rows + 2; i++) {
@@ -59,6 +61,12 @@ Field.prototype.resetAllNeighbours = function()
     for (var row in this.data)
         for (var column in this.data[row])
             this.data[row][column].neighbours = 0;
+}
+
+Field.prototype.increaseGeneration = function()
+{
+    this.generation++;
+    this.generationHTML.innerHTML = this.generation;
 }
 
 // Initialize the canvas and add the event listener.
@@ -89,6 +97,8 @@ function initialize()
     // Add event listeners:
     Settings.canvas.addEventListener("mousedown", getMousePositionOnCanvas,
                                      false);
+
+    field.generationHTML = document.getElementById("Generation");
 
     // The following function needs to be defined in the main game file.
     finishInitialization();

@@ -6,8 +6,8 @@
 
 // Extend Cell color map with Wireworld colors:
 Settings.cellColor.push("#bb7733");  // 'Copper' for 'wire'.
-Settings.cellColor.push("#77bbff");  // 'light blue' for 'tail'.
-Settings.cellColor.push("#0066ff");  // 'dark blue' for 'head'.
+Settings.cellColor.push("#77bbff");  // 'Light blue' for 'tail'.
+Settings.cellColor.push("#0066ff");  // 'Dark blue' for 'head'.
 
 // Wireworld specific extensions to the Cell type:
 Cell.prototype.createCell = function (cellState)
@@ -90,6 +90,7 @@ WireField.prototype.nextGeneration = function ()
     }
 
     this.countAllNeighbours();
+    this.increaseGeneration();
 }
 
 // This is just for debugging.
@@ -127,34 +128,18 @@ WireField.prototype.print = function()
 }
 
 
-// Finish initialization for Wireworld
+// Finish initialization for Wireworld:
 function finishInitialization()
 {
+    // Nothing special needed here.
 }
 
 function changeDrawingColor(cellType)
 {
     var oldCellType = Settings.cellToDraw;
 
-    if (oldCellType != cellType) {
+    if (oldCellType != cellType)
         Settings.cellToDraw = cellType;
-        var HTML =  document.getElementById("CurrentCellType");
-        var string = HTML.innerHTML;
-
-        switch(cellType) {
-        case 3:
-            string = "Electron head";
-            break;
-        case 2:
-            string = "Electron tail";
-            break;
-        case 1:
-            string = "Wire";
-            break;
-        }
-
-        HTML.innerHTML = string;
-    }
 }
 
 // Create the playing field.

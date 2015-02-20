@@ -9,27 +9,37 @@
   </head>
   <body>
     <h1>Wireworld</h1>
-    <div>
-      <p><em>Choose a cell type and then click on a field to draw.</em></p>
-      <p>
-        <button id="WireCellButton" type="button"
-                onClick="changeDrawingColor(1);">Wire</button>
-        <button id="TailCellButton" type="button"
-                onClick="changeDrawingColor(2);">Tail</button>
-        <button id="HeadCellButton" type="button"
-                onClick="changeDrawingColor(3);">Head</button>
-        Current cell type: <strong id="CurrentCellType">Wire</strong>.
-      </p>
-    </div>
+    <p><em>Choose a cell type,</em>
+      <input type="radio" id="Wire" name="CellType"
+             onClick="changeDrawingColor(1);"
+             checked><label for="Wire">Wire,</label>
+      <input type="radio" id="Tail" name="CellType"
+             onClick="changeDrawingColor(2);"><label for="Tail">Tail,</label>
+      or
+      <input type="radio" id="Head" name="CellType"
+             onClick="changeDrawingColor(3);"><label for="Head">Head,</label>
+      <em>then draw on the field:</em>
+    </p>
     <!-- Be sure that the canvas is quadratic, i.e.: width = height ! -->
     <div>
       <canvas id="board" width="500" height="500">
         This Wireworld implementation does only run in HTML5 capable browsers.
       </canvas>
     </div>
-    <div>
+    <p>
+      <button id="RunButton" type="button" onClick="runAutomata()">Run</button>
+      <button id="StopButton" type="button" onClick="stopAutomata()">
+        Stop</button>
+      <select id="SpeedSelect" onChange="changeSpeed(this);">
+        <option value="0">As fast as possible</option>
+        <option value="10">10ms / Generation</option>
+        <option value="100" selected>100ms / Generation</option>
+        <option value="500">0.5s / Generation</option>
+        <option value="1000">1s / Generation</option>
+      </select>
       <button id="NextGenerationButton" type="button"
               onClick="nextGeneration();">Next Generation</button>
-    </div>
+      Generation: <span id="Generation">0</span>
+    </p>
   </body>
 </html>
