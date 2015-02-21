@@ -105,7 +105,49 @@ WireField.prototype.nextGeneration = function ()
     this.updatePopulationHTML();
 }
 
-// This is just for debugging.
+// Parse char from input file:
+WireField.prototype.parseChar = function (row, column, char)
+{
+    switch (char) {
+    case '#':
+        this.createCell(row, column, 3);
+        drawCell(row, column, 3);
+        break;
+    case '+':
+        this.createCell(row, column, 2);
+        drawCell(row, column, 2);
+        break;
+    case '*':
+        this.createCell(row, column, 1);
+        drawCell(row, column, 1);
+        break;
+    case ' ':
+    default:
+        break;
+    }
+}
+
+// Generate char for file output:
+WireField.prototype.generateChar = function (row, column)
+{
+    switch (this.data[row][column].state) {
+    case 3:
+        return '#';
+        break;
+    case 2:
+        return '+';
+        break;
+    case 1:
+        return '*';
+        break;
+    case 0:
+    default:
+        return ' ';
+        break;
+    }
+}
+
+// This is just for debugging:
 WireField.prototype.print = function()
 {
     var printstring = '';

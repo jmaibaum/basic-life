@@ -121,6 +121,12 @@ function initialize()
 
     field.generationHTML = document.getElementById("Generation");
     field.populationHTML = document.getElementById("Population");
+
+    // Setup for dropping field files on the canvas:
+    var dropZone = Settings.canvas;
+    dropZone.addEventListener("dragenter", dragenter, false);
+    dropZone.addEventListener("dragover", dragover, false);
+    dropZone.addEventListener("drop", drop, false);
 }
 
 /*
@@ -229,4 +235,111 @@ function stopAutomata()
 {
     window.clearInterval(Settings.intervalID);
     Settings.intervalID = 0;
+}
+
+
+/*
+ * Save field to and load field from files.
+ * Adapted from:
+ * https://thiscouldbebetter.wordpress.com/2012/12/18/loading-editing-and-
+ * saving-a-text-file-in-html5-using-javascrip/
+ */
+function saveFile()
+{
+    var textToWrite = '';
+
+    // Loop over field to construct text string:
+    for (var row = 1; row <= field.rows; row++) {
+        for (var column = 1; column <= field.columns; column++) {
+            textToWrite += field.generateChar(row, column);
+        }
+        textToWrite += '\n';
+    }
+
+    var fileName = document.getElementById("FileName").value;
+    var textFileAsBlob = new Blob([textToWrite], {type:'text/plain'});
+    var downloadLink = document.createElement("a");
+    downloadLink.download = fileName;
+    downloadLink.innerHTML = "Download File";
+
+    if (window.webkitURL != null) {
+        // Chrome allows the link to be clicked without actually adding it to
+        // the DOM.
+        downloadLink.href = window.webkitURL.createObjectURL(textFileAsBlob);
+    } else {
+        // Firefox requires the link to be added to the DOM before it can be
+        // clicked.
+        downloadLink.href = window.URL.createObjectURL(textFileAsBlob);
+        downloadLink.onclick = function (e) {
+            document.body.removeChild(e.target);
+        };
+        downloadLink.style.display = "none";
+        document.body.appendChild(downloadLink);
+    }
+
+    downloadLink.click();
+}
+
+function loadFile(files)
+{
+    var file = files[0];
+    var textType = /text.*/;
+
+    if (file.type.match(textType)) {
+        var reader = new FileReader();
+
+        reader.onload = function (e) {
+            var row = 1, column = 1;
+            field.clear();
+
+            for (var charNr in reader.result) {
+                field.parseChar(row, column, reader.result[charNr]);
+
+                column++;
+                if (column > field.columns) {
+                    column = 0;
+                    row++;
+                }
+            }
+
+            field.countAllNeighbours();
+            field.updatePopulationHTML();
+        };
+
+        reader.readAsText(file);
+    } else {
+        console.log("File not supported.")
+    }
+}
+
+// Functions for drag and dop onto the canvas:
+function dragenter(e)
+{
+    e.stopPropagation();
+    e.preventDefault();
+}
+
+function dragover(e)
+{
+    e.stopPropagation();
+    e.preventDefault();
+}
+
+function drop(e)
+{
+    e.stopPropagation();
+    e.preventDefault();
+
+    loadFile(e.dataTransfer.files);
+}
+
+// Function for submitting with enter from a text field:
+function handleKeyPress(event, textField)
+{
+    if (event.keyCode === 13) {  // Enter key was pressed.
+        if (textField == "FileName")
+            saveFile();
+        else if (textField == "RandomCells")
+            fillWithRandomCells();
+    }
 }

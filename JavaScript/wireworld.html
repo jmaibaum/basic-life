@@ -11,15 +11,15 @@
     <h1>Wireworld</h1>
     <p><em>Choose</em>
       <input type="radio" id="Wire" name="CellType"
-             onClick="changeDrawingColor(1);"
+             onclick="changeDrawingColor(1);"
              checked><label for="Wire">Wire,</label>
       <input type="radio" id="Tail" name="CellType"
-             onClick="changeDrawingColor(2);"><label for="Tail">Tail,</label>
+             onclick="changeDrawingColor(2);"><label for="Tail">Tail,</label>
       or
       <input type="radio" id="Head" name="CellType"
-             onClick="changeDrawingColor(3);"><label for="Head">Head,</label>
+             onclick="changeDrawingColor(3);"><label for="Head">Head,</label>
       <em>and draw on the field.</em>
-      <button id="ClearButton" type="button" onClick="clearField()">Clear
+      <button id="ClearButton" type="button" onclick="clearField()">Clear
         Field</button>
     </p>
     <div>
@@ -29,10 +29,10 @@
       </canvas>
     </div>
     <p class="statusBar">
-      <button id="RunButton" type="button" onClick="runAutomata()">Run</button>
-      <button id="StopButton" type="button" onClick="stopAutomata()">
+      <button id="RunButton" type="button" onclick="runAutomata()">Run</button>
+      <button id="StopButton" type="button" onclick="stopAutomata()">
         Stop</button>
-      <select id="SpeedSelect" onChange="changeSpeed(this);">
+      <select id="SpeedSelect" onchange="changeSpeed(this);">
         <option value="0">As fast as possible</option>
         <option value="10">10ms / Generation</option>
         <option value="100" selected>100ms / Generation</option>
@@ -40,9 +40,16 @@
         <option value="1000">1s / Generation</option>
       </select>
       <button id="NextGenerationButton" type="button"
-              onClick="nextGeneration();">Next Generation</button>
+              onclick="nextGeneration();">Next Generation</button>
       Generation: <strong id="Generation">0</strong>
       Population: <strong id="Population">0</strong>
+    </p>
+    <p class="statusBar">
+      <button id="SaveButton" type="button" onclick="saveFile()">Save</button>
+      the current field as <input id="FileName" type="text"
+                                  value="wireworld.txt" size="12"
+                                  onkeypress="handleKeyPress(event, this.id)">.
+      Load a file via drag and drop onto the field.
     </p>
   </body>
 </html>

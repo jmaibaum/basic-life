@@ -129,6 +129,28 @@ LifeField.prototype.fillWithRandomCells = function (number)
     }
 }
 
+// Parse char from input file:
+LifeField.prototype.parseChar = function (row, column, char) {
+    switch (char) {
+    case '*':
+        this.createCell(row, column, 1);
+        drawCell(row, column, 1);
+        break;
+    case ' ':
+    default:
+        break;
+    }
+}
+
+// Generate char for file output:
+LifeField.prototype.generateChar = function (row, column)
+{
+    if (this.data[row][column].state)
+        return '*';
+    else
+        return ' ';
+}
+
 // This is just for debugging.
 LifeField.prototype.print = function()
 {
@@ -162,11 +184,4 @@ function fillWithRandomCells()
 {
     var randomCells = document.getElementById("RandomCells").value;
     field.fillWithRandomCells(randomCells);
-}
-
-// Function for submitting with enter from the text field:
-function handleKeyPress(event)
-{
-    if (event.keyCode === 13)  // Enter key was pressed.
-        fillWithRandomCells();
 }
