@@ -80,6 +80,16 @@ Field.prototype.updatePopulationHTML = function ()
     }
 }
 
+Field.prototype.clear = function ()
+{
+    for (var row in this.data)
+        for (var column in this.data[row]) {
+            this.createCell(row, column, 0);
+            drawCell(row, column, 0);
+            this.updatePopulationHTML();
+        }
+}
+
 // Initialize the canvas and add the event listener.
 function initialize()
 {
@@ -111,9 +121,6 @@ function initialize()
 
     field.generationHTML = document.getElementById("Generation");
     field.populationHTML = document.getElementById("Population");
-
-    // The following function needs to be defined in the main game file.
-    finishInitialization();
 }
 
 /*
@@ -176,6 +183,13 @@ function drawCell(row, column, state)
 
     Settings.context.fillRect(cellx, celly, Settings.cellSize,
                               Settings.cellSize);
+}
+
+
+// Wrapper for field.clear():
+function clearField()
+{
+    field.clear();
 }
 
 

@@ -5,7 +5,6 @@
  */
 
 // Variables and types needed for LIFE:
-Settings.randomCells = 500;
 Settings.cellColor.push("#000000");  // 'living' Cell
 
 // Specialised methods for LIFE Cells:
@@ -27,7 +26,7 @@ Cell.prototype.kill = function ()
         return false;
 }
 
-// Specialised LifeField, inherited from Field:
+// Specialized LifeField, inherited from Field:
 var LifeField = function (rows, columns)
 {
     Field.call(this, rows, columns);  // Call the baseclass constructor.
@@ -112,13 +111,17 @@ LifeField.prototype.nextGeneration = function ()
 
 LifeField.prototype.fillWithRandomCells = function (number)
 {
+    // Protect against overfilling the field:
+    if (this.population + parseInt(number) > (this.rows * this.columns))
+        number = (this.rows * this.columns) - this.population;
+
     for (var i = 0; i < number; i++) {
         do {
             var exists = false;
             var row    = Math.floor(Math.random() * Settings.cellsPerLine) + 1;
             var column = Math.floor(Math.random() * Settings.cellsPerLine) + 1;
 
-            if (field.livenCell(row, column, 1)) {
+            if (this.livenCell(row, column, 1)) {
                 exists = true;
                 drawCell(row, column, 1);
             }
@@ -154,8 +157,16 @@ LifeField.prototype.print = function()
 var field = new LifeField(Settings.cellsPerLine, Settings.cellsPerLine);
 
 
-// LIFE specific initialization, called from main initialization function:
-function finishInitialization()
+// Wrapper function for field.fillWithRandomCells():
+function fillWithRandomCells()
 {
-    field.fillWithRandomCells(Settings.randomCells);
+    var randomCells = document.getElementById("RandomCells").value;
+    field.fillWithRandomCells(randomCells);
+}
+
+// Function for submitting with enter from the text field:
+function handleKeyPress(event)
+{
+    if (event.keyCode === 13)  // Enter key was pressed.
+        fillWithRandomCells();
 }

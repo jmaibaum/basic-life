@@ -9,9 +9,18 @@
   </head>
   <body>
     <h1>Game of Life</h1>
-    <p><em>Click on a field to draw a cell.</em></p>
-    <!-- Be sure that the canvas is quadratic, i.e.: width = height ! -->
+    <p>
+      <em>Click on a field to draw a cell,</em> or <label for="RandomCells">fill
+      it with</label>
+      <input type="number" id="RandomCells" min="1" max="5000" step="1"
+             value="500" onkeypress="handleKeyPress(event);">
+      <button id="FillButton" type="button"
+      onClick="fillWithRandomCells()">Random Cells</button>.
+      <button id="ClearButton" type="button" onClick="clearField()">Clear
+        Field</button>
+    </p>
     <div>
+      <!-- Be sure that the canvas is quadratic, i.e.: width = height ! -->
       <canvas id="board" width="500" height="500">
         This Game of Life implementation does only run in HTML5 capable
         browsers.

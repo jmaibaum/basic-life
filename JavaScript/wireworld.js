@@ -137,15 +137,9 @@ WireField.prototype.print = function()
     }
 
     console.log(printstring);
-    console.log(this.population + " Electron Heads.")
+    console.log(this.population + ' Electron Heads.')
 }
 
-
-// Finish initialization for Wireworld:
-function finishInitialization()
-{
-    // Nothing special to do here.
-}
 
 function changeDrawingColor(cellType)
 {

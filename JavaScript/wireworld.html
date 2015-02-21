@@ -9,7 +9,7 @@
   </head>
   <body>
     <h1>Wireworld</h1>
-    <p><em>Choose a cell type,</em>
+    <p><em>Choose</em>
       <input type="radio" id="Wire" name="CellType"
              onClick="changeDrawingColor(1);"
              checked><label for="Wire">Wire,</label>
@@ -18,10 +18,12 @@
       or
       <input type="radio" id="Head" name="CellType"
              onClick="changeDrawingColor(3);"><label for="Head">Head,</label>
-      <em>then draw on the field:</em>
+      <em>and draw on the field.</em>
+      <button id="ClearButton" type="button" onClick="clearField()">Clear
+        Field</button>
     </p>
-    <!-- Be sure that the canvas is quadratic, i.e.: width = height ! -->
     <div>
+      <!-- Be sure that the canvas is quadratic, i.e.: width = height ! -->
       <canvas id="board" width="500" height="500">
         This Wireworld implementation does only run in HTML5 capable browsers.
       </canvas>
