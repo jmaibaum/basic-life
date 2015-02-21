@@ -31,8 +31,6 @@ Cell.prototype.kill = function ()
 var LifeField = function (rows, columns)
 {
     Field.call(this, rows, columns);  // Call the baseclass constructor.
-
-    this.livingCells = 0;
 }
 LifeField.prototype = Object.create(Field.prototype);
 LifeField.prototype.constructor = LifeField;
@@ -51,10 +49,12 @@ LifeField.prototype.createCell = function (row, column, state, update)
 LifeField.prototype.livenCell = function (row, column, update)
 {
     if (this.data[row][column].liven()) {
-        this.livingCells++;
+        this.population++;
 
-        if (update)
+        if (update) {
             this.updateNeighbours(row, column, update);
+            this.updatePopulationHTML();
+        }
 
         return true;
     } else
@@ -64,10 +64,12 @@ LifeField.prototype.livenCell = function (row, column, update)
 LifeField.prototype.killCell = function (row, column, update)
 {
     if (this.data[row][column].kill()) {
-        this.livingCells--;
+        this.population--;
 
-        if (update)
+        if (update) {
             this.updateNeighbours(row, column, update);
+            this.updatePopulationHTML();
+        }
 
         return true;
     } else
@@ -105,6 +107,7 @@ LifeField.prototype.nextGeneration = function ()
 
     this.countAllNeighbours();
     this.increaseGeneration();
+    this.updatePopulationHTML();
 }
 
 LifeField.prototype.fillWithRandomCells = function (number)
@@ -144,7 +147,7 @@ LifeField.prototype.print = function()
     }
 
     console.log(printstring);
-    console.log(this.livingCells + ' lebende Zellen.');
+    console.log(this.population + ' living Cells.');
 }
 
 // Create the playing field.

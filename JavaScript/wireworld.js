@@ -39,13 +39,24 @@ WireField.prototype.createCell = function (row, column, cellState, update)
     var oldState = retval[1];
 
     if (success) {
+        // Update Electron count on new Electron 'head':
+        if (cellState == 3)
+            this.population++;
+        // Or on removing one:
+        else if (oldState == 3)
+            this.population--;
+
         // Update neighbours only, if we draw a 'head' (cellState = 3) or if we
         // delete one (oldState = 3):
         if (update) {
-            if (cellState == 3)
+            if (cellState == 3) {
                 this.updateNeighbours(row, column, update);
-            else if (oldState == 3)
+                this.updatePopulationHTML();
+            }
+            else if (oldState == 3) {
                 this.updateNeighbours(row, column, -1);
+                this.updatePopulationHTML();
+            }
         }
         return true;
     } else
@@ -91,6 +102,7 @@ WireField.prototype.nextGeneration = function ()
 
     this.countAllNeighbours();
     this.increaseGeneration();
+    this.updatePopulationHTML();
 }
 
 // This is just for debugging.
@@ -125,13 +137,14 @@ WireField.prototype.print = function()
     }
 
     console.log(printstring);
+    console.log(this.population + " Electron Heads.")
 }
 
 
 // Finish initialization for Wireworld:
 function finishInitialization()
 {
-    // Nothing special needed here.
+    // Nothing special to do here.
 }
 
 function changeDrawingColor(cellType)

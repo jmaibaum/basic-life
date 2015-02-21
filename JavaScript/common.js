@@ -34,6 +34,9 @@ var Field = function (rows, columns)
     this.columns = columns;
     this.generation = 0;
     this.generationHTML = undefined;  // Needs to be set by initialize().
+    this.population = 0;
+    this.oldPopulaton = 0;
+    this.populationHTML = undefined;  // Needs to be set by initialize().
     this.data = [];
 
     for (var i = 0; i < this.rows + 2; i++) {
@@ -69,6 +72,14 @@ Field.prototype.increaseGeneration = function()
     this.generationHTML.innerHTML = this.generation;
 }
 
+Field.prototype.updatePopulationHTML = function ()
+{
+    if (this.population != this.oldPopulation) {
+        this.populationHTML.innerHTML = this.population;
+        this.oldPopulation = this.population;
+    }
+}
+
 // Initialize the canvas and add the event listener.
 function initialize()
 {
@@ -99,6 +110,7 @@ function initialize()
                                      false);
 
     field.generationHTML = document.getElementById("Generation");
+    field.populationHTML = document.getElementById("Population");
 
     // The following function needs to be defined in the main game file.
     finishInitialization();

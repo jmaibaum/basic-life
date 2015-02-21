@@ -5,3 +5,7 @@ body {
 canvas {
     border: 1px solid #cccccc;
 }
+
+.statusBar {
+    font-size: .8em;
+}
