@@ -216,7 +216,6 @@ function changeSpeed(selectItem)
         stopAutomata();
         runAutomata();
     }
-
 }
 
 function nextGenerationFromInterval()
