@@ -221,11 +221,6 @@ function changeSpeed(selectItem)
     }
 }
 
-function nextGenerationFromInterval()
-{
-    field.nextGeneration();
-}
-
 function runAutomata()
 {
     if (!Settings.intervalID)
@@ -237,6 +232,11 @@ function stopAutomata()
 {
     window.clearInterval(Settings.intervalID);
     Settings.intervalID = 0;
+}
+
+function nextGenerationFromInterval()
+{
+    field.nextGeneration();
 }
 
 
