@@ -261,7 +261,6 @@ function saveFile()
     var textFileAsBlob = new Blob([textToWrite], {type:'text/plain'});
     var downloadLink = document.createElement("a");
     downloadLink.download = fileName;
-    downloadLink.innerHTML = "Download File";
 
     if (window.webkitURL != null) {
         // Chrome allows the link to be clicked without actually adding it to
