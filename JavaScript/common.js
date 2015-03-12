@@ -122,7 +122,7 @@ function initialize()
     }
 
     // Add event listeners:
-    Settings.canvas.addEventListener("mousedown", getMousePositionOnCanvas,
+    Settings.canvas.addEventListener("mousedown", drawCellFromMouseClick,
                                      false);
 
     // Setup for dropping field files on the canvas:
@@ -137,7 +137,7 @@ function initialize()
  * Adapted from:
  * http://miloq.blogspot.de/2011/05/coordinates-mouse-click-canvas.html
  */
-function getMousePositionOnCanvas(event)
+function drawCellFromMouseClick(event)
 {
     var x = event.x;
     var y = event.y;
