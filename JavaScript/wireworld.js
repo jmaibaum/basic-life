@@ -10,7 +10,7 @@ Settings.cellColor.push("#77bbff");  // 'Light blue' for 'tail'.
 Settings.cellColor.push("#0066ff");  // 'Dark blue' for 'head'.
 
 // Wireworld specific extensions to the Cell type:
-Cell.prototype.createCell = function (cellState)
+Cell.prototype.changeCellState = function (cellState)
 {
     var oldState = this.state;
     var success  = false;
@@ -34,7 +34,7 @@ WireField.prototype.constructor = WireField;
 
 WireField.prototype.createCell = function (row, column, cellState, update)
 {
-    var retval   = this.data[row][column].createCell(cellState);
+    var retval   = this.data[row][column].changeCellState(cellState);
     var success  = retval[0];
     var oldState = retval[1];
 
