@@ -240,7 +240,7 @@ function nextGenerationFromInterval()
 
 
 /*
- * Save field to and load field from files.
+ * Save field to and load field from text file.
  * Adapted from:
  * https://thiscouldbebetter.wordpress.com/2012/12/18/loading-editing-and-
  * saving-a-text-file-in-html5-using-javascrip/
