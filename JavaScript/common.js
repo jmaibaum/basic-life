@@ -185,12 +185,12 @@ function drawCell(row, column, state)
     // Set Cell color:
     Settings.context.fillStyle = Settings.cellColor[state];
 
-    var cellx = Math.floor(column * Settings.boardDivision)
+    var drawx = Math.floor(column * Settings.boardDivision)
         - Settings.boardDivision + 1;
-    var celly = Math.floor(row * Settings.boardDivision)
+    var drawy = Math.floor(row * Settings.boardDivision)
         - Settings.boardDivision + 1;
 
-    Settings.context.fillRect(cellx, celly, Settings.cellSize,
+    Settings.context.fillRect(drawx, drawy, Settings.cellSize,
                               Settings.cellSize);
 }
 
