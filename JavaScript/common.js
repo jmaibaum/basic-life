@@ -96,6 +96,8 @@ function initialize()
     // Prepare canvas:
     Settings.canvas = document.getElementById("board");
     Settings.context = Settings.canvas.getContext("2d");
+    field.generationHTML = document.getElementById("Generation");
+    field.populationHTML = document.getElementById("Population");
 
     Settings.boardSideLength = Settings.canvas.width;  // Assume as quadratic.
     Settings.boardDivision = Math.floor(Settings.boardSideLength /
@@ -118,9 +120,6 @@ function initialize()
     // Add event listeners:
     Settings.canvas.addEventListener("mousedown", getMousePositionOnCanvas,
                                      false);
-
-    field.generationHTML = document.getElementById("Generation");
-    field.populationHTML = document.getElementById("Population");
 
     // Setup for dropping field files on the canvas:
     var dropZone = Settings.canvas;
