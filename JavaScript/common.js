@@ -289,13 +289,13 @@ function loadFile(files)
         var reader = new FileReader();
 
         reader.onload = function (e) {
-            var row = 1, column = 1;
             field.clear();
 
+            var row = 1, column = 1;
             for (var charNr in reader.result) {
                 field.parseChar(row, column, reader.result[charNr]);
-
                 column++;
+
                 if (column > field.columns) {
                     column = 0;
                     row++;
