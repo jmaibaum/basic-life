@@ -88,6 +88,10 @@ Field.prototype.clear = function ()
             drawCell(row, column, 0);
             this.updatePopulationHTML();
         }
+
+    // Reset generation counter.
+    this.generation = 0;
+    this.generationHTML.innerHTML = this.generation;
 }
 
 // Initialize the canvas and add the event listener.
