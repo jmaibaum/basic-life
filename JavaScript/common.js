@@ -201,14 +201,17 @@ function clearField()
     field.clear();
 }
 
-
-// Wrapper for next generation method:
-function nextGeneration()
+function runAutomata()
 {
     if (!Settings.intervalID)
-        field.nextGeneration();
-    else
-        stopAutomata();
+        Settings.intervalID = window.setInterval(nextGenerationFromInterval,
+                                                 Settings.speed);
+}
+
+function stopAutomata()
+{
+    window.clearInterval(Settings.intervalID);
+    Settings.intervalID = 0;
 }
 
 function changeSpeed(selectItem)
@@ -221,17 +224,13 @@ function changeSpeed(selectItem)
     }
 }
 
-function runAutomata()
+// Wrapper for next generation method:
+function nextGeneration()
 {
     if (!Settings.intervalID)
-        Settings.intervalID = window.setInterval(nextGenerationFromInterval,
-                                                 Settings.speed);
-}
-
-function stopAutomata()
-{
-    window.clearInterval(Settings.intervalID);
-    Settings.intervalID = 0;
+        field.nextGeneration();
+    else
+        stopAutomata();
 }
 
 function nextGenerationFromInterval()
