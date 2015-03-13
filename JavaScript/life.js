@@ -129,6 +129,18 @@ LifeField.prototype.fillWithRandomCells = function (number)
     }
 }
 
+// Wrapper function for field.fillWithRandomCells():
+function fillWithRandomCells()
+{
+    var randomCells = document.getElementById("RandomCells").value;
+    field.fillWithRandomCells(randomCells);
+}
+
+
+// Create the playing field.
+var field = new LifeField(Settings.cellsPerLine, Settings.cellsPerLine);
+
+
 // Parse char from input file:
 LifeField.prototype.parseChar = function (row, column, char) {
     switch (char) {
@@ -173,15 +185,4 @@ LifeField.prototype.print = function()
 
     console.log(printstring);
     console.log(this.population + ' living Cells.');
-}
-
-// Create the playing field.
-var field = new LifeField(Settings.cellsPerLine, Settings.cellsPerLine);
-
-
-// Wrapper function for field.fillWithRandomCells():
-function fillWithRandomCells()
-{
-    var randomCells = document.getElementById("RandomCells").value;
-    field.fillWithRandomCells(randomCells);
 }

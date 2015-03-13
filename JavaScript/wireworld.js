@@ -106,6 +106,10 @@ WireField.prototype.nextGeneration = function ()
 }
 
 
+// Create the playing field.
+var field = new WireField(Settings.cellsPerLine, Settings.cellsPerLine);
+
+
 function changeDrawingColor(cellType)
 {
     var oldCellType = Settings.cellToDraw;
@@ -190,7 +194,3 @@ WireField.prototype.print = function()
     console.log(printstring);
     console.log(this.population + ' Electron heads.')
 }
-
-
-// Create the playing field.
-var field = new WireField(Settings.cellsPerLine, Settings.cellsPerLine);
