@@ -105,6 +105,15 @@ WireField.prototype.nextGeneration = function ()
     this.updatePopulationHTML();
 }
 
+
+function changeDrawingColor(cellType)
+{
+    var oldCellType = Settings.cellToDraw;
+
+    if (oldCellType != cellType)
+        Settings.cellToDraw = cellType;
+}
+
 // Parse char from input file:
 WireField.prototype.parseChar = function (row, column, char)
 {
@@ -165,7 +174,7 @@ WireField.prototype.print = function()
                 fieldstring += '+ ';
                 break;
             case 1:  // 'wire'
-                fieldstring += 'x ';
+                fieldstring += '* ';
                 break;
             case 0:
             default:
@@ -179,17 +188,9 @@ WireField.prototype.print = function()
     }
 
     console.log(printstring);
-    console.log(this.population + ' Electron Heads.')
+    console.log(this.population + ' Electron heads.')
 }
 
-
-function changeDrawingColor(cellType)
-{
-    var oldCellType = Settings.cellToDraw;
-
-    if (oldCellType != cellType)
-        Settings.cellToDraw = cellType;
-}
 
 // Create the playing field.
 var field = new WireField(Settings.cellsPerLine, Settings.cellsPerLine);
