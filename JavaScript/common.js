@@ -144,12 +144,15 @@ function drawCellFromMouseClick(event)
 
     // Firefox workaround:
     if (x == undefined && y == undefined) {
-        x = event.clientX + document.body.scrollLeft +
-            document.documentElement.scrollLeft;
-        y = event.clientY + document.body.scrollTop +
-            document.documentElement.scrollTop;
+        x = event.clientX;
+        y = event.clientY;
     }
 
+    // Adjust for a possibly scrolled view:
+    x += window.pageXOffset;
+    y += window.pageYOffset;
+
+    // Get the coordinates relative to the top left canvas corner:
     x -= Settings.canvas.offsetLeft;
     y -= Settings.canvas.offsetTop;
 
