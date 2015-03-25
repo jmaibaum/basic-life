@@ -82,12 +82,13 @@ Field.prototype.updatePopulationHTML = function ()
 
 Field.prototype.clear = function ()
 {
-    for (var row in this.data)
-        for (var column in this.data[row]) {
-            this.createCell(row, column, 0);
+    for (var row = 1; row <= this.rows; row++) {
+        for (var column = 1; column <= this.columns; column++) {
+            this.createCell(row, column, 0, -1);
             drawCell(row, column, 0);
             this.updatePopulationHTML();
         }
+    }
 
     // Reset generation counter.
     this.generation = 0;
